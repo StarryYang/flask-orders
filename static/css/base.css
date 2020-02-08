@@ -1,0 +1,12 @@
+
+body{
+    background: #f3f3f3;
+}
+.logo{ margin-top:-10px;width:40px;}
+.main{
+    width:730px;
+    background:#fff;
+    margin:0 auto;
+    overflow: hidden;
+    padding:10px;
+}
