@@ -31,7 +31,7 @@ def cate_add():
         title = request.values.get('title')
         des = request.values.get('des')
         num = request.values.get('num')
-        cate = Cate.query.filter(Cate.title == title).first()
+        cate = Cate.query.filter(Cate.title == title,Cate.status==1).first()
         if cate:
             return json.dumps({'code': 202, 'message': "菜品分类已存在，请更换菜品分类名称"})
         else:
