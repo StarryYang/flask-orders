@@ -3,4 +3,64 @@
 {% block title %}
 首页
 {% endblock %}
-{% block main %}{% endblock %}
+{% block head %}
+    <style>
+    h3{
+        padding:0 20px ;
+        font-size:14px;
+        border-left:4px solid #f52;
+    }
+    ul.wrapper{
+        list-style: none;
+        overflow: hidden;
+        padding: 20px;
+    }
+    .wrapper li{
+        float:left;
+        margin:0 10px 10px 0;
+        width:20%;
+    }
+    .wrapper li img{
+        width:100%;
+    }
+    .wrapper a{
+        display:block;
+           text-decoration: none;
+        color:#333;
+    }
+
+    </style>
+{% endblock %}
+{% block main %}
+    <script>
+    $('.navbar-nav li').removeClass('active')
+    $('.navbar-nav li').eq(0).addClass('active')
+
+    </script>
+    <h3>精选门店</h3>
+    <ul class="wrapper"><li>
+        <img src="{{ url_for('static',filename='imgs/logo.jpeg') }}" alt="">
+        <h4>小李烧烤</h4>
+    </li></ul>
+    <h3>猜你喜欢的</h3>
+    <div class="item">
+        <span class="btn btn-default">早餐</span>
+        <span class="btn btn-default">晚餐</span>
+    </div>
+    <ul class="wrapper">
+        <li>
+            <a href="{{ url_for('detail',id=1) }}">
+            <img src="{{ url_for('static',filename='imgs/logo.jpeg') }}" alt="">
+            <h4>小李烧烤</h4>
+            </a>
+        </li>
+    </ul>
+    <h3>公告</h3>
+    <ul>
+    <li><a href="">小李烧烤新菜品推出巴西大闸蟹烧烤</a></li>
+    </ul>
+    <h3>会员福利</h3>
+    <ul><li><a href="">
+        <h4>诚鑫烧烤会员8折</h4>
+    </a></li></ul>
+{% endblock %}

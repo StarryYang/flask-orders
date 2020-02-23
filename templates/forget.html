@@ -1,0 +1,84 @@
+{% extends 'home.html' %}
+
+{% block title %}
+首页
+{% endblock %}
+{% block head %}
+    <style>
+
+    h3{
+        padding:0 20px ;
+        font-size:14px;
+        border-left:4px solid #f52;
+    }
+    input{
+        width:240px !important;
+    }
+
+    </style>
+{% endblock %}
+{% block main %}
+    <h3>忘记密码</h3>
+     <form method="POST" >
+        <div class="form-container">
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="请输入密码" id="password">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="请再次输入密码" id="pwd">
+            </div>
+            <div class="form-group">
+                <div class="btn btn-default" id="back">取消</div>
+                <div class="btn btn-primary " id="forget">修改</div>
+            </div>
+        </div>
+
+    </form>
+    <script>
+      $(function(){
+          $('.menus li').eq(0).addClass('active');
+          $('#back').click(function(){
+              window.history.back();
+          })
+          $('#forget').click(function(){
+               var password = $('#password').val()
+              if(password==''){
+               return  $.message({
+                     type:'info',
+                     message:'请填写密码'
+                 })
+             }
+              var pwd = $('#pwd').val()
+              if(pwd==''){
+               return  $.message({
+                     type:'info',
+                     message:'请填写确认密码'
+                 })
+             }
+             $.ajax({
+                 url:"{{ url_for('forget') }}",
+                 data:{
+                     id:"{{ user.id }}",
+                     password:password,
+                     pwd:pwd
+                 },
+                 type:"POST",
+                 success:function (res) {
+                    var res = JSON.parse(res);
+                    if(res.code==200){
+                        $.message('修改成功');
+                        setTimeout(function(){
+                            window.location.href="{{ url_for('center') }}"
+                        },500)
+                    }else{
+                       $.message({type:"info",message:res.message});
+                    }
+                 },
+                 error:function (res) {
+                    console.log(res)
+                 }
+             })
+          })
+      })
+    </script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'home.html' %}
+
+{% block title %}
+首页
+{% endblock %}
+{% block head %}
+    <style>
+    h3{
+        padding:0 20px ;
+        font-size:14px;
+    }
+    ul.wrapper{
+        list-style: none;
+        overflow: hidden;
+        padding: 20px;
+    }
+    .wrapper li{
+        float:left;
+        margin:0 10px 10px 0;
+        width:20%;
+    }
+    .wrapper li img{
+        width:100%;
+    }
+     .table{
+        margin:20px 0;
+    }
+    </style>
+{% endblock %}
+{% block main %}
+     <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a href="#">店铺列表</a></li>
+      <li role="presentation"><a href="#">新增</a></li>
+    </ul>
+     <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>店铺名</th>
+            <th>店主</th>
+            <th>电话</th>
+            <th>状态</th>
+          <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+            <td>烧烤店</td>
+          <td>张三</td>
+
+          <td>15822505555</td>
+             <td>运营中</td>
+            <td>2019-12-29 18：00：45</td>
+            <td><span class="btn">删除</span><span class="btn">编辑</span></td>
+        </tr>
+      </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+推荐商家
+{% endblock %}
+{% block head %}
+    <style>
+    .list{
+        overflow: hidden;
+        margin: 20px;
+    }
+    .item{
+        float:left;
+        width:23.5%;
+        margin:0 10px 10px 0;
+        text-align:center;
+        font-size:14px;
+        padding:0 5px;
+    }
+    .item img{
+        width:80%;
+        display: block;
+        margin:20px auto;
+    }
+    .item:nth-child(4n){
+        margin-right:0;
+    }
+    .item h3{font-size:16px}
+
+    </style>
+
+{% endblock %}
+{% block main %}
+
+    <script>
+    $('.navbar-nav li').removeClass('active')
+    $('.navbar-nav li').eq(1).addClass('active')
+
+    </script>
+    <div class="list">
+
+        <div class="item">
+            <img src="{{ url_for('static',filename='imgs/logo.jpeg') }}" alt="">
+            <h3>小李烧烤店</h3>
+            <p>小李烧烤非常美味，好吃</p>
+        </div>
+         <div class="item">
+            <img src="{{ url_for('static',filename='imgs/logo.jpeg') }}" alt="">
+            <h3>小李烧烤店</h3>
+            <p>小李烧烤非常美味，好吃</p>
+        </div>
+     <div class="item">
+            <img src="{{ url_for('static',filename='imgs/logo.jpeg') }}" alt="">
+            <h3>小李烧烤店</h3>
+            <p>小李烧烤非常美味，好吃</p>
+        </div>
+    <div class="item">
+            <img src="{{ url_for('static',filename='imgs/logo.jpeg') }}" alt="">
+            <h3>小李烧烤店</h3>
+            <p>小李烧烤非常美味，好吃</p>
+        </div>
+    </div>
+{% endblock %}

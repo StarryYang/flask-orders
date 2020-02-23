@@ -1,0 +1,144 @@
+{% extends 'home.html' %}
+
+{% block title %}
+首页
+{% endblock %}
+{% block head %}
+    <style>
+    h3{
+        padding:0 20px ;
+        font-size:14px;
+        padding-left:20px;
+        border-left:4px solid #f52;
+    }
+   input[type="text"]{
+        width:240px !important;
+    }
+    .radios{
+        display: inline-block;
+        width:15px;
+        height:15px;
+        vertical-align: middle;
+        border:1px solid #ccc;
+        cursor: pointer;
+        border-radius: 50%;
+        margin:0 5px;
+    }
+    .active{
+        position:relative;
+    }
+    .radios.active:after{
+        content:"";
+        width:10px;
+        height:10px;
+        background: #f52;
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
+        z-index:5;
+        border-radius: 50%;
+    }
+    </style>
+{% endblock %}
+{% block main %}
+    <ul class="nav nav-tabs">
+      <li role="presentation"><a href="{{ url_for('address') }}">地址列表</a></li>
+      <li role="presentation"   class="active"><a href="{{ url_for('add_address') }}">新增</a></li>
+    </ul>
+     <h3>编辑地址</h3>
+    <form method="POST" >
+        <div class="form-container">
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" value="{{ address.username }}" placeholder="请输入联系人" id="username">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="请输入联系方式" value="{{ address.phone }}" id="phone" maxlength="11">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="请输入地址" id="address" value="{{ address.address }}" name="address">
+            </div>
+            <div class="form-group">
+               <span>设置为默认收货地址</span>
+                {% if address.is_address=='0' %}
+                <span class="radios active" data-address="0"></span>否
+                {% else %}<span class="radios" data-address="0"></span>否
+                {% endif %}
+                {% if address.is_address=='1' %}
+                <span class="radios active" data-address="1"></span>是
+                {% else %}<span class="radios" data-address="1"></span>是
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <div class="btn btn-default" id="back">取消</div>
+                <div class="btn btn-primary" id="review">修改 </div>
+            </div>
+        </div>
+    </form>
+    <script>
+     $(function () {
+        $('#back').click(function(){
+            window.location.href="{{ url_for('address') }}"
+        })
+         $('.radios').click(function () {
+            $(this).addClass('active');
+            $(this).siblings().removeClass('active')
+         })
+         $('#review').click(function(){
+             var username = $('#username').val()
+              if(username==''){
+               return  $.message({
+                     type:'info',
+                     message:'请填写联系人'
+                 })
+             }
+            var phone = $('#phone').val()
+              if(phone==''){
+               return  $.message({
+                     type:'info',
+                     message:'请填写联系方式'
+                 })
+             }
+             var address = $('#address').val()
+              if(address==''){
+               return  $.message({
+                     type:'info',
+                     message:'请填写地址'
+                 })
+             }
+             if(!$('.radios').hasClass('active')){
+                 return  $.message({
+                     type:'info',
+                     message:'请选择是否默认收货地址'
+                 })
+             }
+             var is_address = $('.radios.active').attr('data-address')
+             $.ajax({
+                 url:"{{ url_for('edit_addr') }}",
+                 data:{
+                     id:{{ user.id }},
+                     address_id:{{ address.id }},
+                     username:username,
+                     phone:phone,
+                     address:address,
+                     is_address:is_address,
+                     status:1
+                 },
+                 type:"POST",
+                 success:function(res){
+                     var res = JSON.parse(res);
+                     if(res.code==200){
+                         $.message('新增成功')
+                         setTimeout(function(){
+                             window.location.href="{{ url_for('address') }}"
+                         },500)
+                     }else{
+                         $.message({type:"info",message:res.message});
+                     }
+
+                 }
+             })
+         })
+     })
+    </script>
+{% endblock %}

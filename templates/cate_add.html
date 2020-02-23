@@ -1,0 +1,138 @@
+{% extends 'home.html' %}
+
+{% block title %}
+菜品分类新增
+{% endblock %}
+{% block head %}
+    <style>
+    h3{
+        padding:0 20px ;
+        font-size:14px;
+        border-left:4px solid #f52;
+    }
+     .table{
+        margin:20px 0;
+    }
+    .table img{
+        width:20px;
+        display:block;
+    }
+    #imgwrapper{
+        overflow:hidden;
+    }
+    #imgwrapper .upload{
+        height:80px;
+        width:80px;
+        border:1px solid #000;
+        background:#f2f2f2;
+        color:#000;
+        position:relative;
+        text-align:center;
+        line-height:80px;
+    }
+    #imgwrapper img{
+        width:100px;
+        display:inline-block;
+        margin:0 20px 20px 0;
+    }
+    .upload input{
+        position:absolute;
+        top:0;
+        left:0;
+        z-index:3px;
+        background:transparent;
+        width:100%;
+        height:100%;
+        cursor:pointer;
+        opacity:0;
+    }
+    </style>
+{% endblock %}
+{% block main %}
+    <script>
+    $('.menus li').eq(4).addClass('active')
+    </script>
+     <ul class="nav nav-tabs">
+      <li role="presentation" ><a href="{{ url_for('caiM') }}">菜品列表</a></li>
+         <li role="presentation" class="active"><a href="{{ url_for('cai_cate') }}">菜品分类</a></li>
+      <li role="presentation" ><a href="#">新增</a></li>
+    </ul>
+    <h3>新增菜品分类</h3>
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">菜品分类名称：</label>
+            <div class="col-sm-4 "><input type="text" placeholder="请输入菜品" class="form-control" id="title"></div>
+        </div>
+         <div class="form-group">
+            <label class="col-sm-2 control-label">菜品总数：</label>
+            <div class="col-sm-4 ">
+               <input type="text" placeholder="请输入菜品总数" class="form-control" id="num" value="">
+            </div>
+         </div>
+         <div class="form-group">
+            <label class="col-sm-2 control-label">菜品分类备注描述：</label>
+            <div class="col-sm-4">
+                <textarea name="" id="des"  class="form-control" cols="30" rows="10" style="resize:none" value=""></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-4">
+
+            <div class="btn btn-default" id="back">取消</div>
+            <div class="btn btn-primary" id="add">新增</div>
+            </div>
+        </div>
+        <script>
+            $(function(){
+                $('#back').click(function () {
+                    window.location.href="{{ url_for('cai_cate') }}"
+                })
+                $('#add').click(function(event){
+                    var title = $("#title").val();
+                    if(title==''){
+                       return  $.message({
+                             type:'info',
+                             message:'请填写菜品分类名称'
+                         })
+                    }
+                    var num = $("#num").val();
+                    if(num==''){
+                       return  $.message({
+                             type:'info',
+                             message:'请填写菜品总数'
+                         })
+                    }
+                    var des = $("#des").val();
+                    if(des==''){
+                       return  $.message({
+                             type:'info',
+                             message:'请填写菜品分类备注描述'
+                         })
+                    }
+                    $.ajax({
+                        url:"{{ url_for('ca_add') }}",
+                        data:{
+                            title:title,
+                            des:des,
+                            num:num
+                        },
+                        type:'POST',
+                        success:function (data) {
+                           var data = JSON.parse(data);
+                            console.log(data.code);
+                            if(data.code==200){
+                                 $.message('新增成功')
+                                 setTimeout(function(){
+                                     window.location.href="{{ url_for('cai_cate') }}"
+                                 },500)
+                             }else {
+                                $.message({type: "info", message: res.message});
+                            }
+                        }
+                    })
+                })
+            })
+        </script>
+    </form>
+{% endblock %}

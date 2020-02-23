@@ -1,0 +1,84 @@
+{% extends 'home.html' %}
+
+{% block title %}
+首页
+{% endblock %}
+{% block head %}
+    <style>
+    h3{
+        padding:0 20px ;
+        font-size:14px;
+        border-left:4px solid #f52;
+    }
+    input{
+        width:240px !important;
+    }
+
+
+    </style>
+{% endblock %}
+{% block main %}
+    <h3>更换手机</h3>
+
+     <form method="POST" >
+        <div class="form-container">
+            <div class="form-group">
+                <input type="phone" class="form-control" placeholder="请输入手机号" id="phone">
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" placeholder="请输入密码" id="password">
+            </div>
+            <div class="form-group">
+                <div class="btn btn-default" id="back">取消</div>
+                <div class="btn btn-primary" id="review">修改</div>
+            </div>
+        </div>
+    </form>
+
+    <script>
+      $(function(){
+          $('.menus li').eq(0).addClass('active');
+          $('#back').click(function(){
+              window.history.back();
+          })
+          $('#review').click(function(){
+              var phone = $('#phone').val()
+              if(phone==''){
+               return  $.message({
+                     type:'info',
+                     message:'请填写手机号'
+                 })
+             }
+               var password = $('#password').val()
+              if(password==''){
+               return  $.message({
+                     type:'info',
+                     message:'请填写密码'
+                 })
+             }
+
+             $.ajax({
+                 url:"{{ url_for('phone') }}",
+                 data:{
+                     id:"{{ user.id }}",
+                     password:password,
+                     phone:phone
+                 },
+                 type:"POST",
+                 success:function (res) {
+                    var res = JSON.parse(res);
+                    if(res.code==200){
+                        $.message('修改成功');
+                        setTimeout(function(){
+                            window.location.href="{{ url_for('center') }}"
+                        },500)
+                    }
+                 },
+                 error:function (res) {
+                    console.log(res)
+                 }
+             })
+          })
+      })
+    </script>
+{% endblock %}

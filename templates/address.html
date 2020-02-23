@@ -1,0 +1,114 @@
+{% extends 'home.html' %}
+
+{% block title %}
+首页
+{% endblock %}
+{% block head %}
+    <style>
+    h3{
+        padding:0 20px ;
+        font-size:14px;
+    }
+    .table{
+        margin:20px 0;
+    }
+
+
+    </style>
+{% endblock %}
+{% block main %}
+    <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a href="{{ url_for('address') }}">地址列表</a></li>
+      <li role="presentation" ><a href="{{ url_for('add_address') }}">新增</a></li>
+    </ul>
+     <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>序号</th>
+            <th>联系方式</th>
+
+            <th>收货人</th>
+            <th>地址</th>
+          <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% if addressLists %}
+          {% for addressList in addressLists %}
+            {% set outer_loop = loop %}
+        <tr>
+          <td>{{ outer_loop.index }}</td>
+            <td>{{ addressList.phone }}</td>
+          <td>{{ addressList.username }}</td>
+            <td>{{ addressList.address }}</td>
+            <td>{{ addressList.create_time }}</td>
+            <td>
+                <span class="btn btn-danger" onclick="Addressdelete({{ addressList.id }})">删除</span>
+                <a class="btn" href="{{ url_for('edit_address',id=addressList.id) }}">编辑</a>
+                {% if user.address !=addressList.address %}
+                <span class="btn setAddr" data-id="{{ addressList.id }}">设置默认地址</span>
+                {% endif %}
+            </td>
+        </tr>
+          {% endfor %}
+      {% endif %}
+      </tbody>
+    </table>
+    <script>
+    //删除dom节点
+    function Addressdelete(id){
+        $.ajax({
+            url:"{{url_for('address_delete')  }}",
+            data:{
+                id:id
+            },
+            type:"POST",
+            success:function(res){
+                var res = JSON.parse(res);
+                if(res.code==200){
+                    $.message('删除成功');
+                    setTimeout(function(){
+                        window.location.reload();
+                    },500)
+                }else {
+                     $.message({type:"warning",message:res.message});
+                }
+            },
+            error:function(error){
+                console.log(error)
+            }
+        })
+    }
+
+    $(function(){
+        $('.setAddr').click(function(){
+            var id = $(this).attr('data-id');
+            var user_id = "{{ user.id }}";
+            $.ajax({
+                url:"{{ url_for('set_address') }}",
+                data:{
+                    id:id,
+                    user_id:user_id
+                },
+                type:"POST",
+                success:function (res) {
+                    var res = JSON.parse(res);
+                    if(res.code==200){
+                        $.message('设置成功')
+                         setTimeout(function(){
+                            window.location.reload();
+                         },500)
+                    }else {
+                        $.message({type:"warning",message:res.message});
+                    }
+                },
+                error:function (error) {
+                    console.log(error)
+                }
+            })
+        })
+
+    })
+    </script>
+{% endblock %}

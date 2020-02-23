@@ -1,0 +1,56 @@
+{% extends 'home.html' %}
+
+{% block title %}
+首页
+{% endblock %}
+{% block head %}
+    <style>
+    h3{
+        padding:0 20px ;
+        font-size:14px;
+    }
+     .table{
+        margin:20px 0;
+    }
+    .table img{
+        width:20px;
+        display:block;
+    }
+    </style>
+{% endblock %}
+{% block main %}
+     <ul class="nav nav-tabs">
+      <li role="presentation" class="active"><a href="{{ url_for('caiM') }}">菜品列表</a></li>
+         <li role="presentation"><a href="{{ url_for('cai_cate') }}">菜品分类</a></li>
+      <li role="presentation"><a href="{{ url_for('cai_add') }}">新增</a></li>
+    </ul>
+     <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>序号</th>
+            <th>菜名</th>
+            <th>主图</th>
+            <th>分类</th>
+            <th>价格</th>
+            <th>销量</th>
+            <th>状态</th>
+          <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+            <th>红烧肉</th>
+          <td><img src=" {{ url_for('static',filename='imgs/logo.jpeg') }}"alt=""></td>
+            <td>早餐</td>
+          <td>￥50.00</td>
+
+            <td>50</td>
+            <th>出售中</th>
+            <td>2019-12-29 18：00：45</td>
+            <td><span class="btn">删除</span><span class="btn">编辑</span><span class="btn btn-text btn-primary">下架</span></td>
+        </tr>
+      </tbody>
+    </table>
+{% endblock %}

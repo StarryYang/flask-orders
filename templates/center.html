@@ -1,0 +1,33 @@
+{% extends 'home.html' %}
+
+{% block title %}
+首页
+{% endblock %}
+{% block head %}
+    <style>
+
+    h3{
+        padding:0 0px ;
+        font-size:14px;
+        border-left:4px solid #f52;
+        padding-left:15px;
+    }
+    p{
+        line-height:30px;
+        font-size:12px;
+    }
+    .name{
+        font-weight: bold;
+        margin-right:5px;
+    }
+    </style>
+{% endblock %}
+{% block main %}
+    <h3>我的</h3>
+    <p><span class="name">手机号:</span>{{ user.phone }}</p>
+    <p><span class="name">昵称:</span>{{ user.username }}</p>
+    <p><span class="name">默认地址:</span>{{ user.address }}  <a href="{{ url_for('address') }}" class="btn btn-primary">设置地址</a></p>
+    <h3>设置</h3>
+    <p><a href="{{ url_for('forget') }}">修改密码</a></p>
+    <p><a href="{{ url_for('phone') }}">更换手机号</a></p>
+{% endblock %}

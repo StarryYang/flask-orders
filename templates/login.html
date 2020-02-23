@@ -8,18 +8,68 @@
 {% endblock %}
 {% block main %}
 
+    <script>
+    $('.navbar-nav li').removeClass('active')
+
+    </script>
     <form method="POST" >
         <div class="form-container">
-            <h3>注  册</h3>
+            <h3>登 录</h3>
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="请输入手机号">
+                <input type="text" class="form-control" placeholder="请输入手机号" name="phone" id="phone">
             </div>
             <div class="form-group">
-                <input type="password" class="form-control" placeholder="请输入密码">
+                <input type="password" class="form-control" placeholder="请输入密码" name="password" id="password">
             </div>
             <div class="form-group">
-                <div class="btn btn-primary ">立即登录</div>
+                <div class="btn btn-primary " id="login">立即登录</div>
             </div>
         </div>
     </form>
+    <script>
+    $(function(){
+        $('#login').click(function(){
+            var phone = $('#phone').val()
+             if(phone==''){
+               return  $.message({
+                     type:'info',
+                     message:'请填写手机号'
+                 })
+             }
+              var password = $('#password').val()
+              if(password==''){
+               return  $.message({
+                     type:'info',
+                     message:'请填写密码'
+                 })
+             }
+            $.ajax({
+             url:"{{ url_for('login') }}",
+             data:{
+                 phone:phone,
+                 password:password,
+             },
+             type:"POST",
+             success:function(res){
+                var res =JSON.parse(res);
+                if(res.code==200){
+                    $.message('登录成功');
+                    setTimeout(function(){
+                        window.location.href="{{ url_for('index') }}"
+                    },1000)
+
+                }else{
+                    $.message({
+                        type:"error",
+                        message:res.message
+                    })
+                }
+             },
+             error:function (res) {
+                console.log(res)
+             }
+         })
+        })
+    })
+    </script>
 {% endblock %}

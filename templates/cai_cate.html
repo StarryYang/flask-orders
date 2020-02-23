@@ -1,0 +1,86 @@
+{% extends 'home.html' %}
+
+{% block title %}
+首页
+{% endblock %}
+{% block head %}
+    <style>
+    h3{
+        padding:0 20px ;
+        font-size:14px;
+        border-left:4px solid #f52;
+    }
+     .table{
+        margin:20px 0;
+    }
+    .table img{
+        width:20px;
+        display:block;
+    }
+    </style>
+{% endblock %}
+{% block main %}
+    <h3>菜品分类</h3>
+    <a class="btn btn-primary" href="{{ url_for('cate_add') }}">新增</a>
+     <ul class="nav nav-tabs">
+      <li role="presentation" ><a href="{{ url_for('caiM') }}">菜品列表</a></li>
+         <li role="presentation" class="active"><a href="{{ url_for('cai_cate') }}">菜品分类</a></li>
+      <li role="presentation"><a href="{{ url_for('cai_add') }}">新增</a></li>
+    </ul>
+     <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>序号</th>
+            <th>菜品分类名称</th>
+            <th>备注</th>
+            <th>菜品总数</th>
+          <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+       {% if cates %}
+            {% for cate in cates %}
+             {% set outer_loop = loop %}
+        <tr>
+          <td>{{ outer_loop.index }}</td>
+            <th>{{cate.title  }}</th>
+            <td>{{ cate.des }}</td>
+
+            <td>{{ cate.num }}</td>
+            <td>{{ cate.create_time }}</td>
+            <td><span class="btn btn-danger" id="{{ cate.id }}">删除</span><a class="btn edit-btn" href="{{ url_for('cate_edit',id=cate.id )}}">编辑</a></td>
+        </tr>
+           {% endfor %}
+      {% endif %}
+      </tbody>
+    </table>
+    <script>
+    $(function () {
+        $('.btn-danger').click(function () {
+            var id = $(this).attr('id');
+             $.ajax({
+            url:"{{url_for('cate_delete')  }}",
+            data:{
+                id:id
+            },
+            type:"POST",
+            success:function(res){
+                var res = JSON.parse(res);
+                if(res.code==200){
+                    $.message('删除成功');
+                    setTimeout(function(){
+                        window.location.reload();
+                    },500)
+                }else {
+                     $.message({type:"warning",message:res.message});
+                }
+            },
+            error:function(error){
+                console.log(error)
+            }
+        })
+        })
+    })
+    </script>
+{% endblock %}
